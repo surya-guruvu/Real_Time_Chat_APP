@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat APP</title>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: rgb(231, 216, 228);
+        }
+        /* -------------- room.ejs -------------- */
+
+        h1 {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        input {
+            width: 100%;
+            height: 40px;
+            text-indent: 10px;
+        }
+
+        button {
+            width: 100%;
+            height: 50px;
+            background-color: #1a2eda;
+            color: white;
+            font-size: larger;
+            font-weight: bold;
+            outline: none;
+            cursor: pointer;
+            border: none;
+        }
+
+        .fields {
+            width: 100%;
+        }
+
+        .window {
+            margin: auto;
+            margin-top: 20px;
+            width: 700px;
+            height: 500px;
+            border: 2px solid #c2c6b6;
+            display: flex;
+            flex-direction: column;
+            align-content: space-between;
+        }
+
+        .chat-message {
+            display: block;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        #output, #feedback {
+            margin-left: 10px;
+        }
+
+        .online {
+            height: 100vh;
+            width: 300px;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            background-color: rgb(110, 103, 103);
+        }
+
+        .online .users-online {
+            background-color: rgb(110, 103, 103);
+            color: white;
+            text-align: center;
+            font-size: 40px;
+            font-weight: bolder;
+        }
+
+        .users {
+            margin-left: 40px;
+            margin-top: 50px;
+        }
+
+        .users p {
+            background-color: rgb(110, 103, 103);
+            color: white;
+        }
+    
+
+    </style>
+
+
+</head>
+ 
+<body>
+    <h1 class="room-message"></h1>
+    <div class="window">
+        <div class="chat-message">
+            <div id="output"></div>
+            <div id="feedback"></div>
+        </div>
+        <div class='fields'>
+            <input type="text" id="message" placeholder="Enter message">
+            <button id="send">Send</button>
+        </div>
+    </div>
+    <div class="online">
+        <p class="users-online">Users Online</p>
+        <div class="users">
+        </div>
+    </div>
+
+</body>
+
+   <script type="text/javascript">
+        var roomMessage=document.querySelector('.room-message');
+        var users=document.querySelector('.users');
+        var output=document.getElementById('output');
+        var feedback=document.getElementById('feedback');
+        var message=document.getElementById('message');
+        var send=document.getElementById('send');
+
+        const socket = io.connect('http://localhost:3000');
+
+        //const socket = io();
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const username = urlParams.get('username');
+        const roomname = urlParams.get('roomname');
+        console.log(username, roomname);
+
+        roomMessage.innerHTML= `You are in room-${roomname}`;
+
+        
+        socket.emit('user-joined',{
+            username: username,
+            roomname: roomname
+        });
+        
+        socket.emit('user-left',{
+            username: username,
+            roomname: roomname
+        });
+        
+
+        socket.on('users-online',(data)=>{
+            users.innerHTML='';
+            console.log(data);
+            data.forEach(user =>{
+                users.innerHTML += `<p>${user}</p>`
+            });
+        });
+    </script>
+</html>
+
