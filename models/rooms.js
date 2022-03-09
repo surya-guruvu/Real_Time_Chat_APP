@@ -6,12 +6,12 @@ const Schema=mongoose.Schema;
 const user=new Schema({
 	username : {
 		type:String,
-		unique:true
+		//unique:true
 	},
 
 	socket_id : {
 		type:String,
-		unique:true
+		//unique:true
 	}
 },{
     timestamps:true,

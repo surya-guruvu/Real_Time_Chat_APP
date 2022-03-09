@@ -14,6 +14,7 @@ roomRouter.route('/')
 .post((req,res,next)=>{    
     var username=req.body.username;
     var roomname=req.body.roomname;
+    res.status=200;
     res.redirect(`/rooms?username=${username}&roomname=${roomname}`);
     /*
     Rooms.findOne({roomname:req.body.roomname})
@@ -44,6 +45,7 @@ roomRouter.route('/')
 })
 
 .get((req, res)=>{
+    res.status=200;
     res.render('room');
 });
 

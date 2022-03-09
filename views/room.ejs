@@ -157,6 +157,17 @@
                 users.innerHTML += `<p>${user}</p>`
             });
         });
+
+        socket.on('error',(data)=>{
+            document.writeln(data.ermsg);
+            document.writeln(`Status: ${data.status}`);
+            document.writeln(data.stack);
+        });
+
+        socket.on('duperror',(data)=>{
+            document.writeln(data);
+        });
+
     </script>
 </html>
 
