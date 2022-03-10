@@ -157,6 +157,18 @@
                 users.innerHTML += `<p>${user}</p>`
             });
         });
+
+        socket.on('error',(data)=>{
+            document.writeln(data.ermsg);
+            document.writeln(`Status: ${data.status}`);
+            document.writeln(data.stack);
+        });
+
+        //If duplicate user is logging in.
+        socket.on('duperror',(data)=>{
+            document.writeln(data);
+        });
+        
     </script>
 </html>
 
