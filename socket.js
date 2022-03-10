@@ -15,15 +15,29 @@ module.exports= (io)=>{
 		    Rooms.findOne({roomname:data.roomname})
 		    .then((room)=>{
 		        if(room!=null){
-		            room.users.push({username:data.username,socket_id: socket.id});
-		            room.save()
-		            .then((room)=>{
-						room.users.forEach(user=>{
-							usersOnline.push(user.username);
-						});
-						io.to(data.roomname).emit('users-online',usersOnline);
 
-		            }, (err) => next(err));
+		        	var found=0;
+		        	for(var i=0;i<room.users.length;i++){
+		        		if(room.users.username==data.username){
+		        			found=1;
+		        			break;
+		        		}
+		        	}
+
+		        	if(found==0){
+			            room.users.push({username:data.username,socket_id: socket.id});
+			            room.save()
+			            .then((room)=>{
+							room.users.forEach(user=>{
+								usersOnline.push(user.username);
+							});
+							io.to(data.roomname).emit('users-online',usersOnline);
+
+			            }, (err) => next(err));
+		        	}
+		        	else{
+		        		document.write('<b>User already logged in');
+		        	}
 		            
 		        }
 		        else{
