@@ -67,6 +67,13 @@ module.exports= (io)=>{
 
 		});
 
+		socket.on('msgSent',(data)=>{
+			io.to(data.roomname).emit('msgSent',{username:data.username,message:data.message});
+		});
+
+		socket.on('typing',(data)=>{
+			socket.broadcast.to(data.roomname).emit('typing',{username:data.username});
+		})
 
 		socket.on('disconnecting',()=>{
 			
