@@ -37,14 +37,6 @@ module.exports= (io)=>{
 			            }, (err) => socket.emit('error',{ermsg:err.message,status:err.status,stack:err.stack}));
 		        	}
 		        	else{
-		        		/*
-		        		room.users.forEach(user=>{
-							usersOnline.push(user.username);
-							console.log(usersOnline);
-						});
-						io.to(data.roomname).emit('users-online',usersOnline);
-						*/
-
 						socket.emit("duperror","User is already Logged in");
 		        	}
 		            
