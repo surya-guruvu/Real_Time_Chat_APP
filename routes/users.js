@@ -10,10 +10,7 @@ router.get('/', function(req, res, next) {
 	res.render('login');
 });
 
-router.get('/index', function(req, res, next) {
-	res.statusCode = 200;
-	res.render('index');
-});
+
 
 router.get('/login', function(req, res, next) {
 	res.statusCode = 200;
