@@ -107,7 +107,7 @@
         </div>
         <div class='fields'>
             <input type="text" id="message" placeholder="Enter message">
-            <button id="send">Send</button>
+            <button id="send1">Send</button>
         </div>
     </div>
     <div class="online">
@@ -124,7 +124,7 @@
         var output=document.getElementById('output');
         var feedback=document.getElementById('feedback');
         var message=document.getElementById('message');
-        var send=document.getElementById('send');
+        var send=document.getElementById('send1');
 
         const socket = io.connect('http://localhost:3000');
 
@@ -158,16 +158,56 @@
             });
         });
 
+<<<<<<< HEAD
+=======
+        socket.on('user-joined',(data)=>{
+            output.innerHTML+=`<p><strong>${data.username}</strong> has joined the room</p>`;
+        })
+
+>>>>>>> my-temporary-work
         socket.on('error',(data)=>{
             document.writeln(data.ermsg);
             document.writeln(`Status: ${data.status}`);
             document.writeln(data.stack);
         });
 
+<<<<<<< HEAD
+=======
+        //If duplicate user is logging in.
+>>>>>>> my-temporary-work
         socket.on('duperror',(data)=>{
             document.writeln(data);
         });
 
+<<<<<<< HEAD
+=======
+        socket.on('msgSent',(data)=>{
+            output.innerHTML+=`<p><strong>${data.username}</strong>: ${data.message}</p>`;
+            feedback.innerHTML='';
+            document.querySelector('.chat-message').scrollTop=document.querySelector('.chat-message');
+            //
+        });
+        
+        send.addEventListener('click',()=>{
+            socket.emit('msgSent',{
+                username: username,
+                roomname: roomname,
+                message: message.value
+            })
+            message.value='';
+
+        });
+
+        message.addEventListener('keypress', () => {
+            socket.emit('typing', {username: username, roomname: roomname})
+        })
+
+        socket.on('typing',(data)=>{
+            feedback.innerHTML=`${data.username} is typing`;
+        })
+
+        
+>>>>>>> my-temporary-work
     </script>
 </html>
 

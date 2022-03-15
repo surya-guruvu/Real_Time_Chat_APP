@@ -23,6 +23,7 @@ module.exports= (io)=>{
 		        			break;
 		        		}
 		        	}
+<<<<<<< HEAD
 
 		        	if(found==0){
 			            room.users.push({username:data.username,socket_id: socket.id});
@@ -45,6 +46,22 @@ module.exports= (io)=>{
 						io.to(data.roomname).emit('users-online',usersOnline);
 						*/
 
+=======
+
+		        	if(found==0){
+			            room.users.push({username:data.username,socket_id: socket.id});
+			            room.save()
+			            .then((room)=>{
+							room.users.forEach(user=>{
+								usersOnline.push(user.username);
+								console.log(usersOnline);
+							});
+							io.to(data.roomname).emit('users-online',usersOnline);
+
+			            }, (err) => socket.emit('error',{ermsg:err.message,status:err.status,stack:err.stack}));
+		        	}
+		        	else{
+>>>>>>> my-temporary-work
 						socket.emit("duperror","User is already Logged in");
 		        	}
 		            
@@ -62,10 +79,21 @@ module.exports= (io)=>{
 
 		        }
 		    },(err) => socket.emit('error',{ermsg:err.message,status:err.status,stack:err.stack}));
+<<<<<<< HEAD
+=======
 
+>>>>>>> my-temporary-work
 
 
 		});
+
+		socket.on('msgSent',(data)=>{
+			io.to(data.roomname).emit('msgSent',{username:data.username,message:data.message});
+		});
+
+		socket.on('typing',(data)=>{
+			socket.broadcast.to(data.roomname).emit('typing',{username:data.username});
+		})
 
 		socket.on('disconnecting',()=>{
 			
